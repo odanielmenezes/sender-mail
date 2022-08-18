@@ -2,10 +2,11 @@ const express = require("express");
 const nodemailer = require("nodemailer");
 const cors = require("cors");
 const app = express();
+require('dotenv/config')
 
 const port = 8081;
 const user = "atendimento@powermanservicos.com";
-const pass = "@Powerman1";
+const pass = process.env.USER_PASS_EMAIL;
 
 // var corsOptions = {
 //   origin: "http://localhost:3000",
@@ -16,7 +17,7 @@ app.use(cors());
 app.get("/", (req, res) => res.send("Hello World"));
 
 app.get("/send/:email/:nome/:mensagem", (req, res) => {
-  console.log("AAAA", req.params);
+  console.log("AAAA", process.env.USER_PASS_EMAIL);
 
   const transporter = nodemailer.createTransport({
     host: "smtp.titan.email",
@@ -36,4 +37,4 @@ app.get("/send/:email/:nome/:mensagem", (req, res) => {
     .catch((erro) => res.send(erro));
 });
 
-app.listen(port, () => console.log(`Running on port ${port}!`));
+app.listen(process.env.PORT || 3000);
