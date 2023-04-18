@@ -27,10 +27,10 @@ app.get("/send/:email/:nome/:mensagem", (req, res) => {
 
   transporter
     .sendMail({
-      from: req.params.email,
+      from: user,
       to: user,
       replyTo: req.params.email,
-      subject: `Novo orçamento de ${req.params.nome}.`,
+      subject: `Nova mensagem de ${req.params.nome}.`,
       text: req.params.mensagem,
     })
     .then((info) => res.send(info))
