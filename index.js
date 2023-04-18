@@ -8,10 +8,10 @@ const port = 8081;
 const user = "atendimento@powermanservicos.com";
 const pass = process.env.USER_PASS_EMAIL;
 
-// var corsOptions = {
-//   origin: "http://localhost:3000",
-//   optionsSuccessStatus: 200,
-// };
+var corsOptions = {
+  origin: "http://localhost:3000",
+  optionsSuccessStatus: 200,
+};
 
 app.use(cors());
 app.get("/", (req, res) => res.send("Hello World"));
