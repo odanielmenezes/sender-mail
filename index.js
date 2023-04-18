@@ -5,7 +5,7 @@ const app = express();
 require('dotenv/config')
 
 const port = 8081;
-const user = "atendimento@powermanservicos.com";
+const user = "danielprofissional93@outlook.com";
 const pass = process.env.USER_PASS_EMAIL;
 
 var corsOptions = {
