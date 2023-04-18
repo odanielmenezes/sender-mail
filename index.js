@@ -17,7 +17,6 @@ app.use(cors());
 app.get("/", (req, res) => res.send("Hello World"));
 
 app.get("/send/:email/:nome/:mensagem", (req, res) => {
-  console.log("AAAA", process.env.USER_PASS_EMAIL);
 
   const transporter = nodemailer.createTransport({
     host: "smtp-mail.outlook.com",
