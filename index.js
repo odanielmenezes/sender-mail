@@ -20,7 +20,7 @@ app.get("/send/:email/:nome/:mensagem", (req, res) => {
   console.log("AAAA", process.env.USER_PASS_EMAIL);
 
   const transporter = nodemailer.createTransport({
-    host: "smtp.titan.email",
+    host: "smtp-mail.outlook.com",
     port: 587,
     auth: { user, pass },
   });
