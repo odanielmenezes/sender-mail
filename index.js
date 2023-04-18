@@ -27,8 +27,8 @@ app.get("/send/:email/:nome/:mensagem", (req, res) => {
 
   transporter
     .sendMail({
-      from: user,
-      to: req.params.email,
+      from: req.params.email,
+      to: user,
       replyTo: req.params.email,
       subject: `Novo orçamento de ${req.params.nome}.`,
       text: req.params.mensagem,
