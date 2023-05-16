@@ -48,7 +48,6 @@ app.post("/send-email", (req, res) => {
     celular,
     empresa,
     funcionarios,
-    posuiLoja,
   } = req.body;
 
   const transporter = nodemailer.createTransport({
@@ -64,11 +63,10 @@ app.post("/send-email", (req, res) => {
       replyTo: email,
       subject: assunto,
       text: `
-        Nova mansagem de: ${nome}/${email}.
+        Nova mansagem de: ${nome}/${email}
         Telefone/Celular: ${celular}
         Empresa: ${empresa}
         Número de funcionários: ${funcionarios}
-        Já possui empresa virtual? ${posuiLoja}
         Mensagem: ${mensagem}
       `,
     })
