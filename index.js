@@ -55,7 +55,7 @@ app.post("/send-email", (req, res) => {
     port: 587,
     auth: { user, pass },
   });
-
+console.log(req.body)
   transporter
     .sendMail({
       from: user,
@@ -74,4 +74,4 @@ app.post("/send-email", (req, res) => {
     .catch((erro) => res.send(erro));
 });
 
-app.listen(process.env.PORT || 3000);
+app.listen(3000);
