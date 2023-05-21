@@ -3,22 +3,27 @@ const nodemailer = require("nodemailer");
 const cors = require("cors");
 const app = express();
 const bodyParser = require("body-parser");
+let multer = require("multer");
+let upload = multer();
+let fs = require("fs");
 require("dotenv/config");
 
-const port = 8081;
 const user = "danielprofissional93@outlook.com";
 const pass = process.env.USER_PASS_EMAIL;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
-var corsOptions = {
-  origin: "http://localhost:3000",
-  optionsSuccessStatus: 200,
-};
+app.use(express.urlencoded({ extended: true }));
 
 app.use(cors());
 app.get("/", (req, res) => res.send("Hello World"));
+app.use(
+  express.urlencoded({
+    extended: false,
+    limit: 10000,
+    parameterLimit: 10,
+  })
+);
 
 app.get("/send/:email/:nome/:mensagem", (req, res) => {
   const transporter = nodemailer.createTransport({
@@ -39,7 +44,7 @@ app.get("/send/:email/:nome/:mensagem", (req, res) => {
     .catch((erro) => res.send(erro));
 });
 
-app.post("/send-email", (req, res) => {
+app.post("/send-email", upload.single("file"), (req, res) => {
   const {
     nome,
     email,
@@ -48,6 +53,7 @@ app.post("/send-email", (req, res) => {
     celular,
     empresa,
     funcionarios,
+    curriculo,
   } = req.body;
 
   const transporter = nodemailer.createTransport({
@@ -55,20 +61,33 @@ app.post("/send-email", (req, res) => {
     port: 587,
     auth: { user, pass },
   });
-console.log(req.body)
+
+  console.log(req.file)
+
   transporter
     .sendMail({
       from: user,
       to: user,
       replyTo: email,
       subject: assunto,
-      text: `
+      attachments: curriculo && req.file !== undefined ? [
+        {
+          filename: "Curriculo.pdf",
+          content: Buffer.from(req.file.buffer),
+          contentType: "application/pdf",
+        },
+      ] : null,
+      text: !curriculo
+        ? `
         Nova mansagem de: ${nome}/${email}
         Telefone/Celular: ${celular}
         Empresa: ${empresa}
         Número de funcionários: ${funcionarios}
         Mensagem: ${mensagem}
-      `,
+      `
+        : `
+      Nova mansagem de: ${nome}/${email}
+      Mensagem: ${mensagem} `,
     })
     .then((info) => res.send(info))
     .catch((erro) => res.send(erro));
