@@ -60,7 +60,7 @@ app.post("/send-email", upload.single("file"), (req, res) => {
     host: "smtp.gmail.com",
     port: 465,
     service: "gmail",
-    secure: true, 
+    secure: false, 
     auth: { user, pass },
   });
 
