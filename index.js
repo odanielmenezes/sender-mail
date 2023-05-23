@@ -8,7 +8,7 @@ let upload = multer();
 let fs = require("fs");
 require("dotenv/config");
 
-const user = "danielprofissional93@outlook.com";
+const user = "daniel.s.boarding@gmail.com";
 const pass = process.env.USER_PASS_EMAIL;
 
 app.use(bodyParser.json());
@@ -57,12 +57,12 @@ app.post("/send-email", upload.single("file"), (req, res) => {
   } = req.body;
 
   const transporter = nodemailer.createTransport({
-    host: "smtp-mail.outlook.com",
+    host: "smtp.gmail.com",
     port: 587,
     auth: { user, pass },
   });
 
-  console.log(req.file)
+  console.log(req.body)
 
   transporter
     .sendMail({
