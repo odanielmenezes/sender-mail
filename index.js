@@ -58,7 +58,9 @@ app.post("/send-email", upload.single("file"), (req, res) => {
 
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
-    port: 587,
+    port: 465,
+    service: "gmail",
+    secure: true, 
     auth: { user, pass },
   });
 
@@ -93,4 +95,4 @@ app.post("/send-email", upload.single("file"), (req, res) => {
     .catch((erro) => res.send(erro));
 });
 
-app.listen(3000);
+app.listen(3030);
