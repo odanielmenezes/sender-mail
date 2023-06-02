@@ -8,8 +8,8 @@ let upload = multer();
 let fs = require("fs");
 require("dotenv/config");
 
-// const user = "bootspace7@outlook.com";
-const user = "danielprofissional93@outlook.com";
+const user = "bootspace7@outlook.com";
+// const user = "danielprofissional93@outlook.com";
 
 const pass = process.env.USER_PASS_EMAIL;
 
