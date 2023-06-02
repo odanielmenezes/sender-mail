@@ -8,7 +8,9 @@ let upload = multer();
 let fs = require("fs");
 require("dotenv/config");
 
-const user = "daniel.s.boarding@gmail.com";
+// const user = "bootspace7@outlook.com";
+const user = "danielprofissional93@outlook.com";
+
 const pass = process.env.USER_PASS_EMAIL;
 
 app.use(bodyParser.json());
@@ -44,27 +46,17 @@ app.get("/send/:email/:nome/:mensagem", (req, res) => {
     .catch((erro) => res.send(erro));
 });
 
-app.post("/send-email", upload.single("file"), (req, res) => {
-  const {
-    nome,
-    email,
-    mensagem,
-    assunto,
-    celular,
-    empresa,
-    funcionarios,
-    curriculo,
-  } = req.body;
+app.post("/send-email", (req, res) => {
+  const { nome, email, mensagem, assunto, celular, empresa, funcionarios } =
+    req.body;
 
   const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    service: "gmail",
-    secure: false, 
+    host: "smtp-mail.outlook.com",
+    port: 587,
     auth: { user, pass },
   });
 
-  console.log(req.body)
+  console.log(req.body);
 
   transporter
     .sendMail({
@@ -72,23 +64,43 @@ app.post("/send-email", upload.single("file"), (req, res) => {
       to: user,
       replyTo: email,
       subject: assunto,
-      attachments: curriculo && req.file !== undefined ? [
+      text: `
+        Nova mansagem de: ${nome}
+        Telefone/Celular: ${celular}
+        Empresa: ${empresa}
+        Número de funcionários: ${funcionarios}
+        Mensagem: ${mensagem}
+      `,
+    })
+    .then((info) => res.send(info))
+    .catch((erro) => res.send(erro));
+});
+
+app.post("/send-curriculo", upload.single("file"), (req, res) => {
+  const { nome, email, mensagem } = req.body;
+
+  const transporter = nodemailer.createTransport({
+    host: "smtp-mail.outlook.com",
+    port: 587,
+    auth: { user, pass },
+  });
+
+  console.log(req.body);
+
+  transporter
+    .sendMail({
+      from: user,
+      to: user,
+      replyTo: email,
+      subject: `Currículo de ${nome}`,
+      attachments: req.file && [
         {
           filename: "Curriculo.pdf",
           content: Buffer.from(req.file.buffer),
           contentType: "application/pdf",
         },
-      ] : null,
-      text: !curriculo
-        ? `
-        Nova mansagem de: ${nome}/${email}
-        Telefone/Celular: ${celular}
-        Empresa: ${empresa}
-        Número de funcionários: ${funcionarios}
-        Mensagem: ${mensagem}
-      `
-        : `
-      Nova mansagem de: ${nome}/${email}
+      ],
+      text: `Nova currículo de: ${nome}
       Mensagem: ${mensagem} `,
     })
     .then((info) => res.send(info))
